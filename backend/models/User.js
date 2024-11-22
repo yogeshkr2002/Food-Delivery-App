@@ -3,10 +3,19 @@ const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema(
   {
-    username: {
+    name: {
       type: String,
       required: true,
-      unique: true,
+    },
+    phone: {
+      type: String,
+      required: true,
+      validate: {
+        validator: function (v) {
+          return /^\d{10}$/.test(v);
+        },
+        message: "Phone number must be 10 digits",
+      },
     },
     email: {
       type: String,
@@ -16,7 +25,14 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+      minlength: 8,
     },
+    gender: {
+      type: String,
+      enum: ["Male", "Female", "Other"],
+    },
+    country: String,
+    profileImage: String,
   },
   { timestamps: true }
 );

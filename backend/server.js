@@ -5,6 +5,8 @@ const cors = require("cors");
 const restaurantRoutes = require("./routes/restaurantRoutes");
 const productRoutes = require("./routes/productRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
+const addressRoutes = require("./routes/addressRoutes");
+const paymentMethodRoutes = require("./routes/paymentMethodRoutes");
 
 // Load env vars
 dotenv.config();
@@ -33,6 +35,8 @@ app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/restaurants", restaurantRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/addresses", addressRoutes);
+app.use("/api/payment-methods", paymentMethodRoutes);
 
 // Home page route (protected)
 app.get(

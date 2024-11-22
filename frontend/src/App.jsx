@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
+import Layout from "./components/Layout";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
@@ -15,6 +16,9 @@ import Checkout from "./components/Checkout";
 import Payment from "./components/Payment";
 import OrderSuccess from "./components/OrderSuccess";
 import PrivateRoute from "./components/PrivateRoute";
+import AddressManagement from "./components/AddressManagement";
+import PaymentMethodForm from "./components/PaymentMethodForm";
+import CheckoutAddressPage from "./components/CheckoutAddressPage";
 
 function App() {
   return (
@@ -28,7 +32,9 @@ function App() {
               path="/home"
               element={
                 <PrivateRoute>
-                  <Home />
+                  <Layout>
+                    <Home />
+                  </Layout>
                 </PrivateRoute>
               }
             />
@@ -36,7 +42,9 @@ function App() {
               path="/products"
               element={
                 <PrivateRoute>
-                  <Products />
+                  <Layout>
+                    <Products />
+                  </Layout>
                 </PrivateRoute>
               }
             />
@@ -44,7 +52,9 @@ function App() {
               path="/profile"
               element={
                 <PrivateRoute>
-                  <Profile />
+                  <Layout>
+                    <Profile />
+                  </Layout>
                 </PrivateRoute>
               }
             />
@@ -52,7 +62,9 @@ function App() {
               path="/checkout"
               element={
                 <PrivateRoute>
-                  <Checkout />
+                  <Layout>
+                    <Checkout />
+                  </Layout>
                 </PrivateRoute>
               }
             />
@@ -60,7 +72,9 @@ function App() {
               path="/payment"
               element={
                 <PrivateRoute>
-                  <Payment />
+                  <Layout>
+                    <Payment />
+                  </Layout>
                 </PrivateRoute>
               }
             />
@@ -68,7 +82,39 @@ function App() {
               path="/order-success"
               element={
                 <PrivateRoute>
-                  <OrderSuccess />
+                  <Layout>
+                    <OrderSuccess />
+                  </Layout>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/addresses"
+              element={
+                <PrivateRoute>
+                  <Layout>
+                    <AddressManagement />
+                  </Layout>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/add-payment-method"
+              element={
+                <PrivateRoute>
+                  <Layout>
+                    <PaymentMethodForm />
+                  </Layout>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/checkout/address"
+              element={
+                <PrivateRoute>
+                  <Layout>
+                    <CheckoutAddressPage />
+                  </Layout>
                 </PrivateRoute>
               }
             />

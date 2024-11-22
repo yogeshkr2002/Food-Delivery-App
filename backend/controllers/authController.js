@@ -12,7 +12,7 @@ const generateToken = (id) => {
 // Register user
 const register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { name, phone, email, password } = req.body;
 
     // Check if user exists
     const userExists = await User.findOne({ email });
@@ -20,9 +20,24 @@ const register = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    // Validate phone number
+    if (!/^\d{10}$/.test(phone)) {
+      return res
+        .status(400)
+        .json({ message: "Phone number must be 10 digits" });
+    }
+
+    // Validate password length
+    if (password.length < 8) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 8 characters long" });
+    }
+
     // Create user
     const user = await User.create({
-      username,
+      name,
+      phone,
       email,
       password,
     });
@@ -30,13 +45,18 @@ const register = async (req, res) => {
     if (user) {
       res.status(201).json({
         _id: user._id,
-        username: user.username,
+        name: user.name,
+        phone: user.phone,
         email: user.email,
         token: generateToken(user._id),
       });
     }
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    console.error("Registration error:", error);
+    res.status(500).json({
+      message: "Server error during registration",
+      error: error.message,
+    });
   }
 };
 
@@ -51,7 +71,7 @@ const login = async (req, res) => {
     if (user && (await user.matchPassword(password))) {
       res.json({
         _id: user._id,
-        username: user.username,
+        name: user.name,
         email: user.email,
         token: generateToken(user._id),
       });
@@ -59,6 +79,7 @@ const login = async (req, res) => {
       res.status(401).json({ message: "Invalid email or password" });
     }
   } catch (error) {
+    console.error("Login error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -76,6 +97,7 @@ const logout = async (req, res) => {
       success: true,
     });
   } catch (error) {
+    console.error("Logout error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
