@@ -4,6 +4,7 @@ const connectDB = require("./config/db");
 const cors = require("cors");
 const restaurantRoutes = require("./routes/restaurantRoutes");
 const productRoutes = require("./routes/productRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
 
 // Load env vars
 dotenv.config();
@@ -31,6 +32,7 @@ app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/restaurants", restaurantRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 // Home page route (protected)
 app.get(

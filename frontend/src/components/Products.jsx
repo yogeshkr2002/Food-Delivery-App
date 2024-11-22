@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
+import { useSearchParams, Link } from "react-router-dom";
 import axios from "axios";
 import Header from "./Header";
+import PopularRestaurants from "./PopularRestaurants";
+import CustomerReviews from "./CustomerReviews";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import "../styles/Products.css";
-import { Link } from "react-router-dom";
 
 function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const {
     cartItems,
@@ -22,6 +26,16 @@ function Products() {
   } = useCart();
 
   const categories = ["Burger", "Fries", "Pizza"];
+  const filteredCategories = categories.filter((category) =>
+    category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  useEffect(() => {
+    const category = searchParams.get("category");
+    if (category) {
+      setSearchTerm(category);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -43,6 +57,11 @@ function Products() {
     fetchProducts();
   }, [user.token]);
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // The search is already happening through the filteredCategories
+  };
+
   if (loading) {
     return (
       <div>
@@ -59,8 +78,35 @@ function Products() {
       <Header />
       <div className={`products-container ${isCartOpen ? "with-cart" : ""}`}>
         <div className="main-content">
+          <div className="search-section">
+            <form onSubmit={handleSearch} className="search-form">
+              <div className="search-input-container">
+                <i className="search-icon">🔍</i>
+                <input
+                  type="text"
+                  placeholder="Search categories..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="search-input"
+                />
+                {searchTerm && (
+                  <button
+                    type="button"
+                    className="clear-search"
+                    onClick={() => setSearchTerm("")}
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+              <button type="submit" className="search-button">
+                Search
+              </button>
+            </form>
+          </div>
+
           <div className="categories-header">
-            {categories.map((category) => (
+            {filteredCategories.map((category) => (
               <div key={category} className="category-label">
                 {category}
               </div>
@@ -71,7 +117,7 @@ function Products() {
             <div className="error-message">{error}</div>
           ) : (
             <>
-              {categories.map((category) => (
+              {filteredCategories.map((category) => (
                 <div key={category} className="category-section">
                   <h2>{category}</h2>
                   <div className="products-scroll">
@@ -105,6 +151,9 @@ function Products() {
               ))}
             </>
           )}
+
+          <PopularRestaurants />
+          <CustomerReviews />
         </div>
 
         {isCartOpen && (

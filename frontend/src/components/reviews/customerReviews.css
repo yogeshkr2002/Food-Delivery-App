@@ -1,0 +1,31 @@
+.star-rating {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 2rem;
+  padding: 0.5rem 0;
+}
+
+.star {
+  cursor: pointer;
+  color: #ddd;
+  transition: color 0.2s;
+}
+
+.star.filled {
+  color: #ffc107;
+}
+
+.star:hover {
+  transform: scale(1.1);
+}
+
+.rating-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rating-input label {
+  color: #666;
+  font-size: 0.9rem;
+}

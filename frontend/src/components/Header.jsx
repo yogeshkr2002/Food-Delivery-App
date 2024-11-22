@@ -15,6 +15,13 @@ function Header() {
     navigate("/login");
   };
 
+  const handleCartClick = () => {
+    if (location.pathname !== "/products") {
+      navigate("/products");
+    }
+    toggleCart();
+  };
+
   const cartItemCount = cartItems.reduce(
     (total, item) => total + item.quantity,
     0
@@ -41,7 +48,7 @@ function Header() {
         >
           Profile
         </Link>
-        <button className="cart-button" onClick={toggleCart}>
+        <button className="cart-button" onClick={handleCartClick}>
           <img src={cartIcon} alt="Cart" className="cart-icon" />
           {cartItemCount > 0 && (
             <span className="cart-count">{cartItemCount}</span>
