@@ -8,7 +8,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import Layout from "./components/Layout";
 import Login from "./components/Login";
-import Register from "./components/Register";
+import Register from "./pages/Register";
 import Home from "./components/Home";
 import Products from "./components/Products";
 import Profile from "./components/Profile";
